@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reaper Captcha</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  <div class="wrapper">
+    <div class="form-wrapper sign-in">
+      <form id="signInForm">
+        <input type="hidden" name="formType" value="signIn">
+        <h2>Sign-in</h2>
+        <div class="input-group">
+          <input type="text" name="emailOrUsername" required>
+          <label for="">Email or Username</label>
+        </div>
+        <div class="input-group">
+          <input type="password" name="password" required>
+          <label for="">Password</label>
+        </div>
+        <div class="remember">
+          <label><input type="checkbox"> Remember me</label>
+        </div>
+        <button type="button" onclick="submitLoginForm()">Login</button>
+        <div class="signUp-link">
+          <p>Don't have an account? <a href="#" class="signUpBtn-link">Sign Up</a></p>
+        </div>
+      </form>
+    </div>
+    <div class="form-wrapper sign-up">
+      <form action="process.php" method="post" id="signUpForm">
+        <input type="hidden" name="formType" value="signUp">
+        <h2>Sign Up</h2>
+        <div class="input-group">
+          <input type="text" name="username" required>
+          <label for="">Username</label>
+        </div>
+        <div class="input-group">
+          <input type="email" name="email" required>
+          <label for="">Email</label>
+        </div>
+        <div class="input-group">
+          <input type="password" name="password" required>
+          <label for="">Password</label>
+        </div>
+        <div class="remember">
+          <label><input type="checkbox" required> I agree to the terms & conditions</label>
+        </div>
+        <button type="button" onclick="submitSignUpForm()">Sign Up</button>
+        <div class="signUp-link">
+          <p>Already have an account? <a href="#" class="signInBtn-link">Sign In</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script src="script.js"></script>
+  <script>
+    function submitLoginForm() {
+      var signInForm = document.getElementById("signInForm");
+      var formData = new FormData(signInForm);
+
+      var formObject = {};
+      formData.forEach((value, key) => {
+        formObject[key] = value;
+      });
+
+      fetch('process.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formObject),
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          window.location.href = 'page2.html';
+        } else {
+          console.error(data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error during login:', error);
+      });
+    }
+
+    function submitSignUpForm() {
+      var signUpForm = document.getElementById("signUpForm");
+      var formData = new FormData(signUpForm);
+
+      var formObject = {};
+      formData.forEach((value, key) => {
+        formObject[key] = value;
+      });
+
+      fetch('process.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formObject),
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          window.location.href = 'page2.html';
+        } else {
+          console.error(data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error during signup:', error);
+      });
+    }
+  </script>
+</body>
+</html>
